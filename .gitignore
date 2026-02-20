@@ -1,2 +1,5 @@
 docker/mysql/data/
-mysql/data/
+*.key
+*-key.pem
+id_rsa
+id_rsa.pub
