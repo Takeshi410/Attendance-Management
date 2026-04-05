@@ -1,0 +1,321 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    padding: 0;
+    margin: 0;
+    font-family: "メイリオ", sans-serif;
+}
+
+button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+    appearance: none;
+}
+
+@media screen and (max-width: 1399px) {
+    .header {
+        align-items: center;
+        background-color: #000;
+        color: #fff;
+        display: flex;
+        font-size: 12px;
+        justify-content: space-between;
+        height: 45px;
+        padding: 0 30px;
+        margin: 0;
+        position: sticky;
+        top: 0px;
+    }
+
+    .header__logo {
+        width: 240px;
+        height: fit-content;
+    }
+
+    .header__logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .header__nav {
+        display: flex;
+    }
+
+    .header__nav ul {
+        display: flex;
+        align-items: center;
+        list-style: none;
+    }
+
+    .header__nav li {
+        margin-right: 30px;
+    }
+
+    .header__nav li:hover {
+        font-weight: bold;
+    }
+
+    .header__nav a {
+        color: #fff;
+        font-size: 18px;
+        text-decoration: none;
+    }
+
+    .header__nav form {
+        margin: 0;
+    }
+
+    .header__logout {
+        color: #fff;
+        font-size: 18px;
+    }
+
+    .header__logout:hover {
+        font-weight: bold;
+    }
+
+    .content__title {
+        font-size: 22px;
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .content__title--left-border {
+        font-size: 22px;
+        border-left: solid 6px #000;
+        padding: 0 0 0 12px;
+    }
+
+    .table {
+        width: 100%;
+        margin-top: 33px;
+        background: #fff;
+        border-radius: 8px;
+        border-collapse: collapse;
+    }
+
+    .table__header,
+    .table__header--left,
+    .table__header--right,
+    .table__cell,
+    .table__cell--left,
+    .table__cell--right {
+        border-bottom: solid 2px #e1e1e1;
+    }
+
+    .table__row:last-child .table__header,
+    .table__row:last-child .table__header--left,
+    .table__row:last-child .table__header--right,
+    .table__row:last-child .table__cell,
+    .table__row:last-child .table__cell--left,
+    .table__row:last-child .table__cell--right {
+        border-bottom: none;
+    }
+
+    .table--list .table__header,
+    .table--list .table__cell {
+        text-align: center;
+        padding: 9px 8px;
+        font-size: 12px;
+    }
+
+    .table--staff-list .table__header,
+    .table--staff-list .table__cell {
+        text-align: center;
+        padding: 9px 8px;
+        font-size: 12px;
+    }
+
+    .table--staff-list .table__header--left,
+    .table--staff-list .table__cell--left {
+        text-align: center;
+        padding: 9px 0 9px 60px;
+        font-size: 12px;
+    }
+
+    .table--staff-list .table__header--right,
+    .table--staff-list .table__cell--right {
+        text-align: center;
+        padding: 9px 60px 9px 0;
+        font-size: 12px;
+    }
+
+    .table--detail .table__coll--header {
+        width: 180px;
+    }
+
+    .table--detail .table__coll--data {
+        width: 100px;
+    }
+
+    .table--detail .table__header {
+        text-align: left;
+        padding: 18px 0 18px 40px;
+        font-size: 15px;
+    }
+
+    .table--detail .table__cell {
+        text-align: center;
+        padding: 18px 15px;
+        font-size: 15px;
+    }
+}
+
+@media screen and (min-width: 1400px) {
+    .header {
+        align-items: center;
+        background-color: #000;
+        color: #fff;
+        display: flex;
+        font-size: 16px;
+        justify-content: space-between;
+        height: 60px;
+        padding: 0 30px;
+        margin: 0;
+        position: sticky;
+        top: 0px;
+    }
+
+    .header__logo {
+        width: 320px;
+        height: fit-content;
+    }
+
+    .header__logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .header__nav {
+        display: flex;
+    }
+
+    .header__nav ul {
+        display: flex;
+        align-items: center;
+        list-style: none;
+    }
+
+    .header__nav li {
+        margin-right: 30px;
+    }
+
+    .header__nav li:hover {
+        font-weight: bold;
+    }
+
+    .header__nav a {
+        color: #fff;
+        font-size: 24px;
+        text-decoration: none;
+    }
+
+    .header__nav form {
+        margin: 0;
+    }
+
+    .header__logout {
+        color: #fff;
+        font-size: 24px;
+    }
+
+    .header__logout:hover {
+        font-weight: bold;
+    }
+
+    .content__title {
+        font-size: 30px;
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .content__title--left-border {
+        font-size: 30px;
+        border-left: solid 8px #000;
+        padding: 0 0 0 16px;
+    }
+
+    .table {
+        width: 100%;
+        margin-top: 44px;
+        background: #fff;
+        border-radius: 10px;
+        border-collapse: collapse;
+    }
+
+    .table__header,
+    .table__header--left,
+    .table__header--right,
+    .table__cell,
+    .table__cell--left,
+    .table__cell--right {
+        border-bottom: solid 2px #e1e1e1;
+    }
+
+    .table__row:last-child .table__header,
+    .table__row:last-child .table__header--left,
+    .table__row:last-child .table__header--right,
+    .table__row:last-child .table__cell,
+    .table__row:last-child .table__cell--left,
+    .table__row:last-child .table__cell--right {
+        border-bottom: none;
+    }
+
+    .table--list .table__header,
+    .table--list .table__cell {
+        text-align: center;
+        padding: 12px 10px;
+        font-size: 16px;
+    }
+
+    .table--staff-list .table__header,
+    .table--staff-list .table__cell {
+        text-align: center;
+        padding: 12px 10px;
+        font-size: 16px;
+    }
+
+    .table--staff-list .table__header--left,
+    .table--staff-list .table__cell--left {
+        text-align: center;
+        padding: 12px 0 12px 80px;
+        font-size: 16px;
+    }
+
+    .table--staff-list .table__header--right,
+    .table--staff-list .table__cell--right {
+        text-align: center;
+        padding: 12px 80px 12px 0;
+        font-size: 16px;
+    }
+
+    .table--detail .table__coll--header {
+        width: 240px;
+    }
+
+    .table--detail .table__coll--data {
+        width: 120px;
+    }
+
+    .table--detail .table__header {
+        text-align: left;
+        padding: 24px 0 24px 40px;
+        font-size: 20px;
+    }
+
+    .table--detail .table__cell {
+        text-align: center;
+        padding: 24px 0;
+        font-size: 20px;
+    }
+}
