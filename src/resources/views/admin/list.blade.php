@@ -56,7 +56,7 @@
             <td class="table__cell">{{ $attendance->break_hm }}</td>
             <td class="table__cell">{{ $attendance->work_hm }}</td>
             <td class="table__cell">
-                <a href="{{ route('admin.detail', ['attendance_id' => $attendance->id]) }}">詳細</a>
+                <a href="{{ route('admin.detail', ['id' => $attendance->id]) }}">詳細</a>
             </td>
         </tr>
         @endforeach

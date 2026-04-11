@@ -318,4 +318,9 @@ button {
         padding: 24px 0;
         font-size: 20px;
     }
+
+    .table--detail .table__cell--remarks {
+        text-align: left;
+        padding: 24px;
+    }
 }

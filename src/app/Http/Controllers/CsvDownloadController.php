@@ -3,12 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
+use App\Models\Attendance;
+use App\Models\User;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class CsvDownloadController extends Controller
 {
-    public function downloadCsv()
+    public function downloadCsv(Request $request)
     {
+        // dd($request);
+        $id = $request->user_id;
         $date = Carbon::createFromFormat('Y/m/d', $request->month . '/01');
 
         $start_date = $date->copy()->startOfMonth();
@@ -49,23 +55,27 @@ class CsvDownloadController extends Controller
             return $a;
         });
 
-        # 以下未調整（CSVの形式から調整）ーーーーー
-
-        $csvHeader = ['id', 'name', 'email', 'created_at', 'updated_at'];
-        $csvData = $users->toArray();
-
-        $response = new StreamedResponse(function () use ($csvHeader, $csvData) {
+        # CSVファイル出力
+        $response = new StreamedResponse(function () use ($attendances, $days) {
             $handle = fopen('php://output', 'w');
-            fputcsv($handle, $csvHeader);
+            fputcsv($handle, ['日付', '出勤', '退勤', '休憩', '合計']);
 
-            foreach ($csvData as $row) {
-                fputcsv($handle, $row);
+            foreach ($days as $day) {
+                $key = $day->format('Y-m-d');
+                $attendance = $attendances->get($key);
+                fputcsv($handle, [
+                    $day->format('Y/m/d'),
+                    $attendance?->clock_in_at?->format('H:i') ?? '',
+                    $attendance?->clock_out_at?->format('H:i') ?? '',
+                    $attendance?->break_hm ?? '',
+                    $attendance?->work_hm ?? '',
+                ]);
             }
 
             fclose($handle);
         }, 200, [
             'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="users.csv"',
+            'Content-Disposition' => 'attachment; filename="attendance.csv"',
         ]);
 
         return $response;

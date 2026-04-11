@@ -15,7 +15,7 @@
 <div class="content">
 <h1 class="content__title--left-border">勤怠詳細</h1>
 
-<form action="{{ route('admin.correction', ['attendance_id' => $attendance->id]) }}" method="post">
+<form action="{{ route('admin.correction', ['id' => $attendance->id]) }}" method="post">
     @csrf
     <table class="table table--detail {{ (($attendance->latestAttendanceAdjustment?->is_approval) === false) && (($attendance->latestAttendanceAdjustment?->is_admin) === false) ? 'readonly' : '' }}">
         <colgroup>

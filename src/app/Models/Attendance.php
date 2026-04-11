@@ -46,7 +46,6 @@ class Attendance extends Model
     public function latestAttendanceAdjustment()
     {
         return $this->hasOne(AttendanceAdjustment::class)
-        ->where('is_approval', false)
         ->latestOfMany('id');
     }
 }

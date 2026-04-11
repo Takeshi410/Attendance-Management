@@ -10,7 +10,11 @@
 
 <!-- 本体 -->
 @section('content')
-@include('components.header')
+@if($role === 'admin')
+    @include('components.header_admin')
+@else
+    @include('components.header')
+@endif
 
 <div class="content">
 <h1 class="content__title--left-border">申請一覧</h1>
@@ -48,7 +52,11 @@
         <td class="table__cell">{{ $correction->remarks }}</td>
         <td class="table__cell">{{ $correction->created_at->format('Y/m/d') }}</td>
         <td class="table__cell">
-            <a href="{{ route('attendance.detail', ['attendance_id' => $correction->attendance->id]) }}">詳細</a>
+            @if($role === 'admin')
+                <a href="{{ route('admin.approve', ['attendance_correction_request_id' => $correction->id]) }}">詳細</a>
+            @else
+                <a href="{{ route('attendance.detail', ['attendance_id' => $correction->attendance->id]) }}">詳細</a>
+            @endif
         </td>
     @endforeach
     </tbody>

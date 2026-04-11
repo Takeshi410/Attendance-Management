@@ -62,22 +62,22 @@ class AdminController extends Controller
         return view('admin.list', compact('date', 'last_date', 'next_date', 'attendances'));
     }
 
-    public function detail($attendance_id){
+    public function detail($id){
         $attendance = Attendance::with([
             'user',
             'breaks.breakAdjustment',
             'latestAttendanceAdjustment'
-        ])->findOrFail($attendance_id);
+        ])->findOrFail($id);
 
         return view('admin.detail', compact('attendance'));
     }
 
 
-    public function correction(DetailRequest $request, $attendance_id) {
+    public function correction(DetailRequest $request, $id) {
         $detail = $request->only('clock_in_at', 'clock_out_at', 'remarks','breaks');
 
         $adjustment = AttendanceAdjustment::create([
-            'attendance_id' => $attendance_id,
+            'attendance_id' => $id,
             'after_clock_in_at' => $detail['clock_in_at'],
             'after_clock_out_at' => $detail['clock_out_at'],
             'remarks' => $detail['remarks'],
@@ -97,7 +97,7 @@ class AdminController extends Controller
             );
         }
 
-        Attendance::find($attendance_id)->update([
+        Attendance::find($id)->update([
             'clock_in_at' => $detail['clock_in_at'],
             'clock_out_at' => $detail['clock_out_at'],
         ]);
@@ -111,7 +111,7 @@ class AdminController extends Controller
             };
         }
 
-        return redirect()->route('admin.detail', ['attendance_id' => $attendance_id]);
+        return redirect()->route('admin.detail', ['id' => $id]);
     }
 
     public function staffList() {

@@ -58,7 +58,7 @@
             <td class="table__cell">{{ $attendances[$key]->break_hm }}</td>
             <td class="table__cell">{{ $attendances[$key]->work_hm }}</td>
             <td class="table__cell">
-                <a href="{{ route('admin.detail', ['attendance_id' => $attendances[$key]->id]) }}">詳細</a>
+                <a href="{{ route('admin.detail', ['id' => $attendances[$key]->id]) }}">詳細</a>
             </td>
             @else
             <td class="table__cell"></td>
@@ -71,4 +71,12 @@
         @endforeach
     </tbody>
 </table>
+
+<form action="/admin/download" method="get">
+    <input type="hidden" name="user_id" value="{{ $user->id }}">
+    <input type="hidden" name="month" value="{{ $month }}">
+<div>
+    <button>CSV出力</button>
+</div>
+</from>
 </div>

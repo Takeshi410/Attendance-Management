@@ -28,6 +28,6 @@ class BreakAdjustment extends Model
 
     public function attendanceAdjustment()
     {
-        return $this->belognsTo(AttendanceAdjustment::Class);
+        return $this->belongsTo(AttendanceAdjustment::Class);
     }
 }

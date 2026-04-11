@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminMiddleware
+class CheckUserRole
 {
     /**
      * Handle an incoming request.
@@ -24,9 +24,9 @@ class AdminMiddleware
         }
 
         if ($user->is_admin) {
-            $request->attributes->set('user_class', 'admin');
+            $request->attributes->set('user_role', 'admin');
         } else {
-            $request->attributes->set('user_class', 'general');
+            $request->attributes->set('user_role', 'general');
         }
 
         return $next($request);
