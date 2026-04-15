@@ -20,6 +20,7 @@ button {
 
 @media screen and (max-width: 1399px) {
     .header {
+        min-width: 700px;
         align-items: center;
         background-color: #000;
         color: #fff;
@@ -158,6 +159,7 @@ button {
 
     .table--detail .table__header {
         text-align: left;
+        vertical-align: middle;
         padding: 18px 0 18px 40px;
         font-size: 15px;
     }
@@ -166,6 +168,15 @@ button {
         text-align: center;
         padding: 18px 15px;
         font-size: 15px;
+    }
+
+    .table--detail .table__cell input {
+        font-size: 15px;
+    }
+
+    .table--detail .table__cell--remarks {
+        text-align: left;
+        padding: 18px;
     }
 }
 
@@ -309,6 +320,7 @@ button {
 
     .table--detail .table__header {
         text-align: left;
+        vertical-align: middle;
         padding: 24px 0 24px 40px;
         font-size: 20px;
     }
@@ -316,6 +328,10 @@ button {
     .table--detail .table__cell {
         text-align: center;
         padding: 24px 0;
+        font-size: 20px;
+    }
+
+    .table--detail .table__cell input {
         font-size: 20px;
     }
 

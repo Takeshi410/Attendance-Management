@@ -36,9 +36,21 @@ body {
         padding: 0;
     }
 
-    .nav__item button {
+    .nav__btn {
+        display:flex;
+        align-items: center;
         font-size: 12px;
         color: #737373;
+    }
+
+    .nav__btn img {
+        width: 15px;
+        opacity: 0.3;
+        margin: 0 6px;
+    }
+
+    .nav__btn--next {
+        rotate: 180deg;
     }
 
     .nav__item--date {
@@ -47,6 +59,10 @@ body {
         color: #000;
     }
 
+    .nav__item--date img {
+        width: 18px;
+        margin: 0 6px;
+    }
 }
 
 @media screen and (min-width: 1400px) {
@@ -55,7 +71,6 @@ body {
         padding: 80px 0;
         width: 900px;
     }
-
 
     .nav {
         width: 100%;
@@ -85,9 +100,21 @@ body {
         padding: 0;
     }
 
-    .nav__item button {
+    .nav__btn {
+        display:flex;
+        align-items: center;
         font-size: 16px;
         color: #737373;
+    }
+
+    .nav__btn img {
+        width: 20px;
+        opacity: 0.3;
+        margin: 0 8px;
+    }
+
+    .nav__btn--next {
+        rotate: 180deg;
     }
 
     .nav__item--date {
@@ -96,4 +123,9 @@ body {
         color: #000;
     }
 
+    .nav__item--date img {
+        width: 25px;
+        margin: 0 8px;
+    }
 }
+

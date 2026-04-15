@@ -52,6 +52,17 @@ body {
         border-radius: 4px;
     }
 
+    .content__approve--btn-disable {
+        width: 98px;
+        height: 38px;
+        margin-left: auto;
+        color: #fff;
+        background: #696969;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: not-allowed;
+    }
+
     .content__approve--message {
         color: #ff000080;
         font-size: 14px;
@@ -144,4 +155,3 @@ body {
         list-style-position: inside;
     }
 }
-

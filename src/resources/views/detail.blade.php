@@ -45,23 +45,34 @@
             <td class="table__cell"><input type="text" name="clock_out_at" value="{{ old('clock_out_at', optional(optional($attendance->latestAttendanceAdjustment)->after_clock_out_at ?? $attendance->clock_out_at)->format('H:i') ?? '') }}"></input></td>
             <td class="table__cell"></td>
         </tr>
-        @foreach ($attendance->breaks as $break)
+        @foreach ($breaks as $break)
             <tr class="table__row">
-            @if ($break->sequence === 1)
+            @if ($break['sequence'] === 1)
                 <th class="table__header">休憩</th>
             @else
-                <th class="table__header">休憩{{ $break->sequence }}</th>
+                <th class="table__header">休憩{{ $break['sequence'] }}</th>
             @endif
-                <td class="table__cell"><input type="text" name="breaks[{{ $break->id }}][break_start_at]" value="{{ old('breaks.' . $break->id . '.break_start_at', optional(optional($break->breakAdjustment)->after_break_start_at ?? $break->break_start_at)->format('H:i')) }}"></input></td>
+                <td class="table__cell"><input type="text" name="breaks[{{ $break['id'] }}][break_start_at]" value="{{ old('breaks.' . $break['id'] . '.break_start_at', $break['break_start_at']) }}"></input></td>
                 <td class="table__cell">〜</td>
-                <td class="table__cell"><input type="text" name="breaks[{{ $break->id }}][break_end_at]" value="{{ old('breaks.' . $break->id . '.break_end_at', optional(optional($break->breakAdjustment)->after_break_end_at ?? $break->break_end_at)->format('H:i')) }}"></input></td>
+                <td class="table__cell"><input type="text" name="breaks[{{ $break['id'] }}][break_end_at]" value="{{ old('breaks.' . $break['id'] . '.break_end_at', $break['break_end_at']) }}"></input></td>
                 <td class="table__cell"></td>
-                <input type="hidden" name="breaks[{{ $break->id}}][break_id]" value="{{ $break['id'] }}">
+                <input type="hidden" name="breaks[{{ $break['id']}}][break_id]" value="{{ $break['id'] }}">
+                <input type="hidden" name="breaks[{{ $break['id']}}][sequence]" value="{{ $break['sequence'] }}">
             </tr>
+            @if ($loop->last && !($attendance->latestAttendanceAdjustment))
+                <tr class="table__row">
+                    <th class="table__header">休憩{{ $break['sequence'] + 1 }}</th>
+                    <td class="table__cell"><input type="text" name="new_break[break_start_at]" value="{{ old('new_break.break_start_at') }}"></input></td>
+                    <td class="table__cell">〜</td>
+                    <td class="table__cell"><input type="text" name="new_break[break_end_at]" value="{{ old('new_break.break_end_at') }}"></input></td>
+                    <td class="table__cell"></td>
+                    <input type="hidden" name="new_break[sequence]" value="{{ $break['sequence'] + 1 }}">
+                </tr>
+            @endif
         @endforeach
         <tr class="table__row">
             <th class="table__header">備考</th>
-            <td colspan="3" class="table__cell"><textarea name="remarks" rows="3" >{{ old('remarks', $attendance->latestAttendanceAdjustment->remarks ?? '') }}</textarea></td>
+            <td colspan="3" class="table__cell"><textarea class="table__cell--remarks" name="remarks" rows="3" >{{ old('remarks', $attendance->latestAttendanceAdjustment->remarks ?? '') }}</textarea></td>
         </tr>
     </table>
 

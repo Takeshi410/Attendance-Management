@@ -32,14 +32,14 @@ class AdminController extends Controller
 
         # 休憩時間の取得
         $attendances = $query->map(function ($a) {
-            $break_minutes = $a->breaks->sum(function ($b) {
+            $break_total_minutes = $a->breaks->sum(function ($b) {
                 if (!$b->break_start_at || !$b->break_end_at) return 0;
                 return $b->break_end_at->diffInMinutes($b->break_start_at);
             });
 
             # 休憩時間の算出
-            $break_hours = intdiv($break_minutes, 60);
-            $break_minutes = $break_minutes % 60;
+            $break_hours = intdiv($break_total_minutes, 60);
+            $break_minutes = $break_total_minutes % 60;
             $a->break_hm = sprintf('%d:%02d', $break_hours, $break_minutes);
 
             if (!$a->clock_in_at || !$a->clock_out_at) {
@@ -47,13 +47,12 @@ class AdminController extends Controller
                 return $a;
             }
 
-
             # 勤務合計時間の算出
-            $work_minutes = $a->clock_out_at->diffInMinutes($a->clock_in_at);
-            $a->work_minutes = max(0, $work_minutes - $break_minutes);
+            $work_total_minutes = $a->clock_out_at->diffInMinutes($a->clock_in_at);
+            $a->work_time = max(0, $work_total_minutes - $break_total_minutes);
 
-            $WorkHours = intdiv($a->work_minutes, 60);
-            $work_minutes = $a->work_minutes % 60;
+            $WorkHours = intdiv($a->work_time, 60);
+            $work_minutes = $a->work_time % 60;
             $a->work_hm = sprintf('%d:%02d', $WorkHours, $work_minutes);
 
             return $a;
@@ -65,16 +64,34 @@ class AdminController extends Controller
     public function detail($id){
         $attendance = Attendance::with([
             'user',
-            'breaks.breakAdjustment',
-            'latestAttendanceAdjustment'
+            'breaks',
+            'latestAttendanceAdjustment.breakAdjustments',
         ])->findOrFail($id);
 
-        return view('admin.detail', compact('attendance'));
+        $breaks = $attendance->latestAttendanceAdjustment
+            ? $attendance->latestAttendanceAdjustment->breakAdjustments->map(function ($b) {
+                return [
+                    'id' => $b->id,
+                    'sequence' => $b->sequence,
+                    'break_start_at' => optional($b->after_break_start_at)->format('H:i'),
+                    'break_end_at' => optional($b->after_break_end_at)->format('H:i'),
+                ];
+            })
+            : $attendance->breaks->map(function ($b) {
+                return [
+                    'id' => $b->id,
+                    'sequence' => $b->sequence,
+                    'break_start_at' => optional($b->break_start_at)->format('H:i'),
+                    'break_end_at' => optional($b->break_end_at)->format('H:i'),
+                ];
+            });
+
+        return view('admin.detail', compact('attendance', 'breaks'));
     }
 
 
     public function correction(DetailRequest $request, $id) {
-        $detail = $request->only('clock_in_at', 'clock_out_at', 'remarks','breaks');
+        $detail = $request->only('clock_in_at', 'clock_out_at', 'remarks', 'breaks', 'new_break');
 
         $adjustment = AttendanceAdjustment::create([
             'attendance_id' => $id,
@@ -85,24 +102,24 @@ class AdminController extends Controller
             'is_admin' => true,
         ]);
 
-        if(!empty($detail['breaks'])) {
-            $adjustment->breakAdjustments()->createMany(
-                collect($detail['breaks'])->map(function ($b) {
-                    return [
-                        'break_id' => $b['break_id'],
-                        'after_break_start_at' => $b['break_start_at'],
-                        'after_break_end_at' => $b['break_end_at'],
-                    ];
-                })->toArray()
-            );
-        }
-
         Attendance::find($id)->update([
             'clock_in_at' => $detail['clock_in_at'],
             'clock_out_at' => $detail['clock_out_at'],
         ]);
 
+
         if(!empty($detail['breaks'])) {
+            $adjustment->breakAdjustments()->createMany(
+                collect($detail['breaks'])->map(function ($b) {
+                    return [
+                        'break_id' => $b['break_id'],
+                        'sequence' => $b['sequence'],
+                        'after_break_start_at' => $b['break_start_at'],
+                        'after_break_end_at' => $b['break_end_at'],
+                    ];
+                })->toArray()
+            );
+
             foreach ($detail['breaks'] as $break) {
                 BreakModel::find($break['break_id'])->update([
                 'break_start_at' => $break['break_start_at'],
@@ -111,14 +128,41 @@ class AdminController extends Controller
             };
         }
 
+        $new_break_start = $detail['new_break']['break_start_at'] ?? null;
+        $new_break_end = $detail['new_break']['break_end_at'] ?? null;
+
+        if($new_break_start !== null || $new_break_end !== null) {
+            $break_adjustment = $adjustment->breakAdjustments()->create([
+                'sequence' => $detail['new_break']['sequence'],
+                'after_break_start_at' => $new_break_start,
+                'after_break_end_at' => $new_break_end,
+                ]);
+
+            $next_sequence = (BreakModel::where('attendance_id', $id)->max('sequence') ?? 0) + 1;
+
+            $break = BreakModel::create([
+                'attendance_id' => $id,
+                'sequence' => $next_sequence,
+                'break_start_at' => $new_break_start,
+                'break_end_at' => $new_break_end,
+            ]);
+
+            $break_adjustment->update([
+                'break_id' => $break->id,
+            ]);
+
+        }
+
         return redirect()->route('admin.detail', ['id' => $id]);
     }
+
 
     public function staffList() {
         $members = User::where('is_admin', false)->get();
 
         return view('admin.staff_list', compact('members'));
     }
+
 
     public function staffDetail(Request $request, $id) {
 
@@ -145,14 +189,14 @@ class AdminController extends Controller
 
         # 休憩時間の取得
         $attendances = $query->map(function ($a) {
-            $break_minutes = $a->breaks->sum(function ($b) {
+            $break_total_minutes = $a->breaks->sum(function ($b) {
                 if (!$b->break_start_at || !$b->break_end_at) return 0;
                 return $b->break_end_at->diffInMinutes($b->break_start_at);
             });
 
             # 休憩時間の算出
-            $break_hours = intdiv($break_minutes, 60);
-            $break_minutes = $break_minutes % 60;
+            $break_hours = intdiv($break_total_minutes, 60);
+            $break_minutes = $break_total_minutes % 60;
             $a->break_hm = sprintf('%d:%02d', $break_hours, $break_minutes);
 
             if (!$a->clock_in_at || !$a->clock_out_at) {
@@ -161,11 +205,11 @@ class AdminController extends Controller
             }
 
             # 勤務合計時間の算出
-            $work_minutes = $a->clock_out_at->diffInMinutes($a->clock_in_at);
-            $a->work_minutes = max(0, $work_minutes - $break_minutes);
+            $work_total_minutes = $a->clock_out_at->diffInMinutes($a->clock_in_at);
+            $a->work_time = max(0, $work_total_minutes - $break_total_minutes);
 
-            $WorkHours = intdiv($a->work_minutes, 60);
-            $work_minutes = $a->work_minutes % 60;
+            $WorkHours = intdiv($a->work_time, 60);
+            $work_minutes = $a->work_time % 60;
             $a->work_hm = sprintf('%d:%02d', $WorkHours, $work_minutes);
 
             return $a;

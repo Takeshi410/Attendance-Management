@@ -48,10 +48,10 @@
         </tr>
         @foreach ($adjustment->breakAdjustments as $break)
             <tr class="table__row">
-            @if ($break->break->sequence === 1)
+            @if ($break->sequence === 1)
                 <th class="table__header">休憩</th>
             @else
-                <th class="table__header">休憩{{ $break->break->sequence }}</th>
+                <th class="table__header">休憩{{ $break->sequence }}</th>
             @endif
                 <td class="table__cell">{{ $break->after_break_start_at->format('H:i') }}</td>
                 <td class="table__cell">〜</td>

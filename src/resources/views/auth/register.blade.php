@@ -38,6 +38,11 @@
     </div>
     <label for="password_confirm" class="entry__label">確認用パスワード</label>
     <input name="password_confirmation" id="password_confirm" type="password" class="entry__input">
+    <div class="entry__error">
+        @error('password_confirmation')
+        {{ $message }}
+        @enderror
+    </div>
     <button class="entry__btn">登録する</button>
     <a href="/login" class="link">ログインはこちら</a>
 </form>

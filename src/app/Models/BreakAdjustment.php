@@ -12,6 +12,7 @@ class BreakAdjustment extends Model
     protected $fillable = [
     'attendance_adjustment_id',
     'break_id',
+    'sequence',
     'after_break_start_at',
     'after_break_end_at',
     ];

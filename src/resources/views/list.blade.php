@@ -21,15 +21,15 @@
             <form action="/attendance/list" method="post">
                 @csrf
                 <input type="hidden" name="month" value="{{ $last_month }}">
-                <button>前月</button>
+                <button class="nav__btn"><img src="{{ asset('img/arrow.png') }}">前月</button>
             </form>
         </li>
-        <li class="nav__item nav__item--date">{{ $month }}</li>
+        <li class="nav__item nav__item--date"><img src="{{ asset('img/calendar.png') }}">{{ $month }}</li>
         <li class="nav__item">
             <form action="/attendance/list" method="post">
                 @csrf
                 <input type="hidden" name="month" value="{{ $next_month }}">
-                <button>翌月</button>
+                <button class="nav__btn">翌月<img class="nav__btn--next" src="{{ asset('img/arrow.png') }}"></button>
             </form>
         </li>
     </ul>

@@ -20,6 +20,8 @@ class CreateBreaksTable extends Migration
             $table->time('break_start_at')->nullable();
             $table->time('break_end_at')->nullable();
             $table->timestamps();
+
+            $table->unique(['attendance_id', 'sequence']);
         });
     }
 

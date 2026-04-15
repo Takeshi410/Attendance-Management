@@ -17,6 +17,8 @@
         <div class="attendance__stat"><p class="attendance__stat--p">勤務外</p></div>
     @elseif ($attendance->clock_out_at !== null)
         <div class="attendance__stat"><p class="attendance__stat--p">退勤済</p></div>
+    @elseif ($attendance->latestBreak !== null && $attendance->latestBreak->break_end_at === null)
+        <div class="attendance__stat"><p class="attendance__stat--p">休憩中</p></div>
     @else
         <div class="attendance__stat"><p class="attendance__stat--p">出勤中</p></div>
     @endif
@@ -36,6 +38,7 @@
         <form action="/attendance/break-end" method="post">
             @method('PATCH')
             @csrf
+            <input type="hidden" name="attendance_id" value="{{ $attendance['id'] }}">
             <input type="hidden" name="break_id" value="{{ $attendance->latestBreak->id }}">
             <button type="submit" class="btn btn--break">休憩戻</button>
         </form>
