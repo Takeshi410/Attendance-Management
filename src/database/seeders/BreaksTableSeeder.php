@@ -15,11 +15,11 @@ class BreaksTableSeeder extends Seeder
      */
     public function run()
     {
-        $attendanceIds = Attendance::pluck('id');
+        $attendance_ids = Attendance::pluck('id');
 
-        foreach ($attendanceIds as $attendanceId) {
+        foreach ($attendance_ids as $attendance_id) {
             BreakModel::factory()->create([
-                'attendance_id' => $attendanceId,
+                'attendance_id' => $attendance_id,
             ]);
         }
     }
