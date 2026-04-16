@@ -30,6 +30,9 @@ class DetailRequest extends FormRequest
             'breaks' => ['nullable', 'array'],
             'breaks.*.break_start_at' => ['required_with:breaks', 'date_format:H:i', 'after:clock_in_at', 'before:breaks.*.break_end_at'],
             'breaks.*.break_end_at' => ['required_with:breaks', 'date_format:H:i', 'before:clock_out_at'],
+            'new_break' => ['nullable', 'array'],
+            'new_break.break_start_at' => ['nullable', 'required_with:new_break.break_end_at', 'date_format:H:i', 'after:clock_in_at', 'before:new_break.break_end_at'],
+            'new_break.break_end_at' => ['nullable', 'required_with:new_break.break_start_at', 'date_format:H:i', 'before:clock_out_at'],
         ];
     }
 
@@ -46,10 +49,16 @@ class DetailRequest extends FormRequest
             'breaks.*.break_start_at.date_format' => '休憩時間は hh:mm 形式（例：09:30）で入力してください',
             'breaks.*.break_start_at.after' => '開始時間もしくは休憩時間が不適切な値です',
             'breaks.*.break_start_at.before' => '休憩時間が不適切な値です',
-            'breaks.*.break_end_at.required_with' => '休憩開始時間を入力してください',
+            'breaks.*.break_end_at.required_with' => '休憩終了時間を入力してください',
             'breaks.*.break_end_at.date_format' => '休憩時間は hh:mm 形式（例：09:30）で入力してください',
             'breaks.*.break_end_at.before' => '退勤時間もしくは休憩時間が不適切な値です',
+            'new_break.break_start_at.date_format' => '休憩時間は hh:mm 形式（例：09:30）で入力してください',
+            'new_break.break_start_at.required_with' => '休憩開始時間を入力してください',
+            'new_break.break_start_at.after' => '開始時間もしくは休憩時間が不適切な値です',
+            'new_break.break_start_at.before' => '休憩時間が不適切な値です',
+            'new_break.break_end_at.date_format' => '休憩時間は hh:mm 形式（例：09:30）で入力してください',
+            'new_break.break_end_at.required_with' => '休憩終了時間を入力してください',
+            'new_break.break_end_at.before' => '退勤時間もしくは休憩時間が不適切な値です',
         ];
     }
 }
-

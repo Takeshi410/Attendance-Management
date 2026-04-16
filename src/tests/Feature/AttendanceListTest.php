@@ -11,7 +11,6 @@ use Database\Seeders\UsersTableSeeder;
 use Database\Seeders\AttendancesTableSeeder;
 use Database\Seeders\BreaksTableSeeder;
 use Carbon\Carbon;
-
 use App\Models\Attendance;
 use App\Models\User;
 use App\Models\BreakModel;
@@ -189,5 +188,54 @@ class AttendanceListTest extends TestCase
     }
 
 
-    
+    public function test_attendance_list_detail() // 詳細画面への遷移
+    {
+        $this->seed(WorkPatternsTableSeeder::class);
+        $this->seed(UsersTableSeeder::class);
+
+        // ログイン情報
+        $email = 'general@example.com';
+        $password = 'password';
+
+        // ログイン
+        $response = $this->post('/login', [
+            'email' => $email,
+            'password' => $password,
+        ]);
+
+        // 検証用データの作成
+        $user_id = auth()->id();
+        $today = Carbon::today();
+        $date = $today->copy()->format('Y-m-d');
+
+        $attendance = Attendance::Create([
+            'user_id' => $user_id,
+            'work_date' => $date,
+            'clock_in_at' => '9:00:00',
+            'clock_out_at' => '18:00:00'
+        ]);
+
+        $break = BreakModel::Create([
+            'attendance_id' => $attendance->id,
+            'sequence' => 1,
+            'break_start_at' => '12:00:00',
+            'break_end_at' => '13:00:00',
+        ]);
+
+        // 一覧画面で対象の詳細ボタンが表示されていることを確認
+        $response = $this->get('/attendance/list');
+        $response->assertStatus(200);
+
+        $expected_url = route('attendance.detail', ['id' => $attendance->id]);
+        $response->assertSee('href="' . $expected_url . '"', false);
+
+
+        // 詳細画面に遷移して出力されているデータを確認
+        $user_name = auth()->user()->name;
+        $year = $today->copy()->format('Y年');
+        $date = $today->copy()->format('n月j日');
+        $response = $this->get(route('attendance.detail', ['id' => $attendance->id]));
+
+        $response->assertSeeInOrder([$user_name, $year, $date, '09:00', '18:00', '12:00', '13:00']);
+    }
 }

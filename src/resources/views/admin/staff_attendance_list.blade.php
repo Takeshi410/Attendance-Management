@@ -75,8 +75,8 @@
 <form action="/admin/download" method="get">
     <input type="hidden" name="user_id" value="{{ $user->id }}">
     <input type="hidden" name="month" value="{{ $month }}">
-<div>
-    <button>CSV出力</button>
-</div>
+    <div class="content__download">
+        <button class="content__download--btn">CSV出力</button>
+    </div>
 </form>
 </div>
