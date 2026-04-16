@@ -15,7 +15,7 @@
 <div class="content">
 <h1 class="content__title--left-border">勤怠詳細</h1>
 
-<form action="{{ route('attendance.request', ['attendance_id' => $attendance->id]) }}" method="post">
+<form action="{{ route('attendance.request', ['id' => $attendance->id]) }}" method="post">
     @csrf
     <table class="table table--detail {{ $attendance->latestAttendanceAdjustment ? 'readonly' : '' }}">
         <colgroup>

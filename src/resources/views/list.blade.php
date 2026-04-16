@@ -58,7 +58,7 @@
             <td class="table__cell">{{ $attendances[$key]->break_hm }}</td>
             <td class="table__cell">{{ $attendances[$key]->work_hm }}</td>
             <td class="table__cell">
-                <a href="{{ route('attendance.detail', ['attendance_id' => $attendances[$key]->id]) }}">詳細</a>
+                <a href="{{ route('attendance.detail', ['id' => $attendances[$key]->id]) }}">詳細</a>
             </td>
             @else
             <td class="table__cell"></td>
@@ -72,3 +72,4 @@
     </tbody>
 </table>
 </div>
+@endsection

@@ -15,7 +15,7 @@
 <form action="/register" method="post" class="entry" novalidate>
     @csrf
     <h1 class="content__title">会員登録</h1>
-    <label for="name" class="entry__label">ユーザ名</label>
+    <label for="name" class="entry__label">名前</label>
     <input name="name" id="name" type="text" class="entry__input" value="{{ old('name') }}">
     <div class="entry__error">
         @error('name')
@@ -36,7 +36,7 @@
         {{ $message }}
         @enderror
     </div>
-    <label for="password_confirm" class="entry__label">確認用パスワード</label>
+    <label for="password_confirm" class="entry__label">パスワード確認</label>
     <input name="password_confirmation" id="password_confirm" type="password" class="entry__input">
     <div class="entry__error">
         @error('password_confirmation')

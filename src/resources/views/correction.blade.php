@@ -55,7 +55,7 @@
             @if($role === 'admin')
                 <a href="{{ route('admin.approve', ['attendance_correction_request_id' => $correction->id]) }}">詳細</a>
             @else
-                <a href="{{ route('attendance.detail', ['attendance_id' => $correction->attendance->id]) }}">詳細</a>
+                <a href="{{ route('attendance.detail', ['id' => $correction->attendance->id]) }}">詳細</a>
             @endif
         </td>
     @endforeach

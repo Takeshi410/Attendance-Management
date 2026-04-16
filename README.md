@@ -4,7 +4,7 @@
 
 ### Docker ビルド
 
-    git@github.com:Takeshi410/Attendance-Management.git
+    git clone git@github.com:Takeshi410/Attendance-Management.git
     cd Attendance-Management
     docker-compose up -d --build
 
@@ -15,7 +15,6 @@
 
     docker-compose exec php bash
     composer install
-    composer require stripe/stripe-php
     cp .env.example .env
 
 ### .envファイルの環境変数を変更
@@ -32,7 +31,7 @@
 #### MAILの環境設定
 
 ```
-"M"AIL_FROM_ADDRESS"に任意のメールアドレスを登録
+"MAIL_FROM_ADDRESS"に任意のメールアドレスを登録
 ```
 
 ### .envファイル設定後、下記コマンドを実行
@@ -40,7 +39,6 @@
     php artisan key:generate
     php artisan migrate
     php artisan db:seed
-    php artisan storage:link
 
 ## 使用技術（実行環境）
 
@@ -66,15 +64,17 @@ mailhog：http://localhost:8025/
 
 ## 動作確認の共有事項
 
-ダーミーデータのユーザーでログインする場合は、下記メールアドレスとパスワードでログインしてください。
+テストユーザーでログインする場合は、下記メールアドレスとパスワードでログインしてください。
 
-    メールアドレス：test@example.com
+```
+・管理者ユーザー
+    メールアドレス：admin@example.com
     パスワード：password
 
-下記画面で画像登録機能の検証を行う際は、1MB以下の画像ファイルを使用してください。
-
-- プロフィール編集画面
-- 商品出品画面
+・一般ユーザー
+    メールアドレス：general@example.com
+    パスワード：password
+```
 
 ## テストケース
 
@@ -111,11 +111,12 @@ php artisan migrate --env=testing
 
 ### テストの実行
 
-#### 下記コマンドを実行
+##### 下記コマンドを実行
 
 ```
-vendor/bin/phpunit tests/Feature/RegisterTest.php
-
+php artisan test --testsuite=Feature
 ```
 
-#### 補足
+### 補足
+
+- 勤怠登録画面の時刻表示をJavaScriptで実装しているため、ユニットテストを作成していません。
