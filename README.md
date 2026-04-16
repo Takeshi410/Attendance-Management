@@ -4,18 +4,21 @@
 
 ### Docker ビルド
 
-    git clone git@github.com:Takeshi410/Attendance-Management.git
-    cd Attendance-Management
-    docker-compose up -d --build
+```
+git clone git@github.com:Takeshi410/Attendance-Management.git
+cd Attendance-Management
+docker-compose up -d --build
+```
 
-    //MySQL は OS によって起動しない場合があるので、それぞれの PC に合わせて
-    　docker-compose.yml ファイルを編集してください。
+MySQL は OS によって起動しない場合があるので、それぞれの PC に合わせてdocker-compose.yml ファイルを編集してください。
 
 ### Laravel 環境構築
 
-    docker-compose exec php bash
-    composer install
-    cp .env.example .env
+```
+docker-compose exec php bash
+composer install
+cp .env.example .env
+```
 
 ### .envファイルの環境変数を変更
 
@@ -36,9 +39,11 @@
 
 ### .envファイル設定後、下記コマンドを実行
 
-    php artisan key:generate
-    php artisan migrate
-    php artisan db:seed
+```
+php artisan key:generate
+php artisan migrate
+php artisan db:seed
+```
 
 ## 使用技術（実行環境）
 
@@ -82,24 +87,30 @@ mailhog：http://localhost:8025/
 
 #### DBの構築
 
-    docker-compose exec mysql bash
-    mysql -u root -p
-    CREATE DATABASE demo_test;
+```
+docker-compose exec mysql bash
+mysql -u root -p
+CREATE DATABASE demo_test;
+```
 
 #### 環境構築
 
-    docker-compose exec php bash
-    cp .env .env.testing
+```
+docker-compose exec php bash
+cp .env .env.testing
+```
 
 #### .env.testingファイルの環境変数を変更
 
-    接続情報を下記の通り変更
+接続情報を下記の通り変更
 
-- APP_ENV=test
-- APP_KEY=
-- DB_DATABASE=demo_test
-- DB_USERNAME=root
-- DB_PASSWORD=root
+```
+APP_ENV=test
+APP_KEY=
+DB_DATABASE=demo_test
+DB_USERNAME=root
+DB_PASSWORD=root
+```
 
 #### .env.testing変更後、下記コマンドを実行
 
